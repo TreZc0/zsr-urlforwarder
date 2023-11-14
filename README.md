@@ -1,4 +1,4 @@
-# Simple URL Shortener
+# ZSR URL Forwarder
 
 A Node.js and Express-based URL shortener with a Firebase Realtime Database backend and a basic caching layer.
 
