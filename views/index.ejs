@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ZSR URL Shortener</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <img id="logo" src="/countdown_logo_new.png" />
+
+        <h1>ZSR.link URL Shortener</h1>
+        <form id="urlForm" action="/shorten" method="post">
+            <input type="text" name="url" placeholder="Enter your URL here..." required>
+            <input type="text" name="customTag" placeholder="Enter a custom short tag (optional)">
+            <button type="submit">Shorten</button>
+        </form>
+
+        <div class="result">
+            <% if (resultMessage.startsWith('http://') || resultMessage.startsWith('https://')) { %>
+                <h4>Short Link created:</h4>
+                <input type="text" id="shortUrl" value="<%= resultMessage %>" readonly>
+                <button id="copyButton">Copy to Clipboard</button>
+                <p id="copyConfirmation" style="display:none;">Copied!</p>
+            <% } else { %>
+                <p><%= resultMessage %></p>
+            <% } %>
+        </div>
+    </div>
+    <footer>
+        <p class="legal-text">Copyright 2023 - ZeldaSpeedRuns</p>
+    </footer>
+    <script type="text/javascript" src="/index.js"></script>
+</body>
+
+</html>

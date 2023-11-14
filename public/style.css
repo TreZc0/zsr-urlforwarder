@@ -1,0 +1,141 @@
+body {
+    background-color: #262626;
+    background-image: url("/pattern.png");
+    background-repeat: repeat;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    margin-bottom: 0;
+}
+
+#logo {
+    width: 300px;
+    margin-bottom: 15px;
+}
+
+form {
+    margin-bottom: 30px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"],
+button[type="submit"] {
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="text"] {
+    background-color: #333;
+    color: #fff;
+}
+
+input[name="url"] {
+    width: calc(100% - 22px);
+    /* Full width minus padding and border */
+}
+
+input[name="customTag"] {
+    width: 40%;
+    /* Shorter width */
+}
+
+button[type="submit"] {
+    background-color: #008080;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    /* Ensure button is block level for centering */
+    width: auto;
+}
+
+button[type="submit"]:hover {
+    background-color: #006565;
+}
+
+.result {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    input[name="customTag"] {
+        width: 100%;
+        /* Full width on mobile */
+    }
+}
+
+.result {
+    margin-top: 20px;
+}
+
+.result input[type="text"] {
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+}
+
+#copyButton {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #4CAF50; /* A shade of green */
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#copyButton:hover {
+    background-color: #45a049;
+}
+
+#copyConfirmation {
+    color: #4CAF50; /* Same as the button for a consistent look */
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+.legal-text {
+    font-size: 12px;
+    color: #666;
+}
+

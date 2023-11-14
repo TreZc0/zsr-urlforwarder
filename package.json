@@ -1,0 +1,37 @@
+{
+  "name": "zsr-urlforwarder",
+  "version": "1.0.0",
+  "description": "a basic node.js url forwarder with a simple in-memory cache and firebase persistence",
+  "type": "module",
+  "main": "app.mjs",
+  "scripts": {
+    "start": "node app.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trezc0/zsr-urlforwarder.git"
+  },
+  "author": "Chris \"TreZc0_\" Wergen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/trezc0/zsr-urlforwarder/issues"
+  },
+  "homepage": "https://github.com/trezc0/zsr-urlforwarder#readme",
+  "keywords": [
+    "url",
+    "shortener",
+    "express",
+    "firebase",
+    "ejs",
+    "node-cache",
+    "nodejs"
+  ],
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.11.0",
+    "nanoid": "^5.0.3",
+    "node-cache": "^5.1.2"
+  }
+}

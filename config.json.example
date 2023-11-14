@@ -1,0 +1,5 @@
+{
+    "domain": "http://localhost",
+    "port": "3443",
+    "databaseURL": "https://xyz-default-rtdb.europe-west1.firebasedatabase.app"
+}
