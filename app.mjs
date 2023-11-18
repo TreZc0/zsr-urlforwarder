@@ -53,6 +53,10 @@ app.get('/', (req, res) => {
   res.render('index', { resultMessage: '' });
 });
 
+app.get('/shorten', (req, res) => {
+  res.redirect('/');
+});
+
 app.post('/shorten', async (req, res) => {
   const { url, customTag } = req.body;
   const tag = customTag.trim().replace(/\s/g, "") || nanoid(5); // Generate a 5-character unique ID
