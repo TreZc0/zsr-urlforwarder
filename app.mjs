@@ -57,8 +57,12 @@ app.post('/shorten', async (req, res) => {
   const { url, customTag } = req.body;
   const tag = customTag.trim().replace(/\s/g, "") || nanoid(5); // Generate a 5-character unique ID
 
+  if (!isValidUrl(url)) {
+      res.render('index', { resultMessage: "Sorry, you need to provide a valid URL."});
+      return;
+  }
+  
   if (customTag) {
-
     //profanity check against string only
     if (profanity.exists(tag)) {
       res.render('index', { resultMessage: "Sorry, no blacklisted words are allowed in custom tags."});
@@ -70,7 +74,6 @@ app.post('/shorten', async (req, res) => {
       res.render('index', { resultMessage: "Sorry, no special characters are allowed in custom tags."});
       return;
     }
-  
   }
 
   const urlRef = db.ref(`urls/${tag}`);
@@ -117,6 +120,17 @@ app.get('/:tag', (req, res) => {
     }
   });
 });
+
+function isValidUrl(urlString) {
+    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+    '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+  
+    return !!urlPattern.test(urlString);
+}
 
 // Start the server
 app.listen(PORT, () => {
