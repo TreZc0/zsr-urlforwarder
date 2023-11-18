@@ -27,7 +27,7 @@
         <h1>ZSR.link URL Shortener</h1>
         <form id="urlForm" action="/shorten" method="post">
             <input type="text" name="url" placeholder="Enter your URL here..." required>
-            <input type="text" name="customTag" placeholder="Enter a custom short tag (optional)">
+            <input type="text" name="customTag" placeholder="Enter a custom short tag (optional, max 20 characters)" pattern="[a-zA-Z0-9]*" maxlength="20">
             <button type="submit">Shorten</button>
         </form>
 

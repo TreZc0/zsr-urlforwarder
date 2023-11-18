@@ -1,5 +1,6 @@
 import { createRequire } from 'module';
 import { nanoid } from 'nanoid';
+import { profanity } from '@2toad/profanity';
 
 const require = createRequire(import.meta.url);
 
@@ -8,6 +9,7 @@ const admin = require('firebase-admin');
 
 const bodyParser = require('body-parser');
 const NodeCache = require('node-cache');
+
 
 const app = express();
 const cache = new NodeCache();
@@ -53,7 +55,23 @@ app.get('/', (req, res) => {
 
 app.post('/shorten', async (req, res) => {
   const { url, customTag } = req.body;
-  const tag = customTag || nanoid(5); // Generate a 5-character unique ID
+  const tag = customTag.trim().replace(/\s/g, "") || nanoid(5); // Generate a 5-character unique ID
+
+  if (customTag) {
+
+    //profanity check against string only
+    if (profanity.exists(tag)) {
+      res.render('index', { resultMessage: "Sorry, blacklisted word in custom tag"});
+      return;
+    }
+  
+    //any non ascii characters
+    if ([...tag].some(char => char.charCodeAt(0) > 127)) { 
+      res.render('index', { resultMessage: "Sorry, no special characters allowed in custom tag"});
+      return;
+    }
+  
+  }
 
   const urlRef = db.ref(`urls/${tag}`);
 
