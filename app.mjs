@@ -127,7 +127,7 @@ function isValidUrl(urlString) {
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
     '(\\?[;&a-z\\d%_.~+=#-]*)?'+ // validate query string
-    '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+    '(\\#[-a-z\\d_]*)?','i'); // validate fragment locator
   
     return !!urlPattern.test(urlString);
 }
