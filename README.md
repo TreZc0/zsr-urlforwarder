@@ -9,6 +9,7 @@ This project is a simple URL shortener service, which allows users to shorten lo
 ## Features
 
 - Shorten URLs with optional custom alias
+- Filter out custom aliases through a profanity filter
 - Persistent storage of shortened URLs using Firebase Realtime Database
 - In-memory caching for quick retrieval of URLs
 - Basic frontend for easy interaction with the service
