@@ -61,13 +61,13 @@ app.post('/shorten', async (req, res) => {
 
     //profanity check against string only
     if (profanity.exists(tag)) {
-      res.render('index', { resultMessage: "Sorry, blacklisted word in custom tag"});
+      res.render('index', { resultMessage: "Sorry, no blacklisted words are allowed in custom tags."});
       return;
     }
   
     //any non ascii characters
     if ([...tag].some(char => char.charCodeAt(0) > 127)) { 
-      res.render('index', { resultMessage: "Sorry, no special characters allowed in custom tag"});
+      res.render('index', { resultMessage: "Sorry, no special characters are allowed in custom tags."});
       return;
     }
   
