@@ -65,7 +65,12 @@ app.post('/shorten', async (req, res) => {
       res.render('index', { resultMessage: "Sorry, you need to provide a valid URL."});
       return;
   }
-  
+
+  if (config["domain_blacklist"].includes(url.split(/(http)s{0,1}:\/\//i))[1].trim()) {
+      res.render('index', { resultMessage: "Sorry, this domain is blacklisted"});
+      return;
+  } 
+    
   if (customTag) {
     //profanity check against string only
     if (profanity.exists(tag)) {
