@@ -66,7 +66,7 @@ app.post('/shorten', async (req, res) => {
       return;
   }
 
-  if (config["domain_blacklist"].includes(url.split(/(http)s{0,1}:\/\//i)[1].trim())) {
+  if (config["domain_blacklist"].includes(url.replace(/(http)s{0,1}:\/\//i,"").trim())) {
       res.render('index', { resultMessage: "Sorry, this domain is blacklisted"});
       return;
   } 
