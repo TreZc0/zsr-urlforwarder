@@ -1,6 +1,8 @@
 import { createRequire } from 'module';
 import { nanoid } from 'nanoid';
 import { profanity } from '@2toad/profanity';
+import ky from 'ky';
+
 
 const require = createRequire(import.meta.url);
 
@@ -19,6 +21,9 @@ const config = require('./config.json');
 const PORT = config.port;
 const DOMAIN = config.domain;
 const DBURL = config.databaseURL;
+
+// Google Analytics Measurement API
+const gaData = require('./secrets/gaService.json');
 
 // Initialize Firebase Admin with credentials
 const serviceAccount = require('./secrets/serviceAccount.json');
@@ -113,8 +118,23 @@ app.get('/:tag', (req, res) => {
     return res.status(400).send('Invalid URL tag.');
   }
 
+  const ga_measurement_id = gaData.measurementId;
+  const ga_api_secret = gaData.apiSecret;
+
   let cachedUrl = cache.get(tag);
   if (cachedUrl) {
+    let ga_event_body =
+    {
+        client_id: getClientId(req.ip),
+        non_personalized_ads: false,
+        events: [{
+            name: 'link_used',
+            params: {
+                link: cachedUrl
+            }
+        }]
+    };
+    ky.post(`https://www.google-analytics.com/mp/collect?measurement_id=${ga_measurement_id}&api_secret=${ga_api_secret}`, { json: ga_event_body }).finally();
     return res.redirect(cachedUrl);
   }
 
@@ -123,6 +143,20 @@ app.get('/:tag', (req, res) => {
     if (snapshot.exists()) {
       const url = snapshot.val();
       cache.set(tag, url, cacheTTL);
+
+      let ga_event_body =
+      {
+          client_id: getClientId(req.ip),
+          non_personalized_ads: false,
+          events: [{
+              name: 'link_used',
+              params: {
+                  link: url
+              }
+          }]
+      };
+      ky.post(`https://www.google-analytics.com/mp/collect?measurement_id=${ga_measurement_id}&api_secret=${ga_api_secret}`, { json: ga_event_body }).finally();
+
       res.redirect(url);
     } else {
       res.status(404).send('Short URL not found.');
@@ -139,6 +173,62 @@ function isValidUrl(urlString) {
     '(\\#[-a-z\\d_]*)?','i'); // validate fragment locator
   
     return !!urlPattern.test(urlString);
+}
+
+function getClientId(ip) {
+
+    let ipv6Parts = ip.split(":");
+
+    if (ipv6Parts.length > 1) {
+
+        for (let i = 0; i < ipv6Parts.length; i++) {
+
+            if (ipv6Parts[i] == "")
+                ipv6Parts[i] = 0;
+            else
+                ipv6Parts[i] = Number.parseInt(ipv6Parts[i], 16);
+        }
+
+        ip = ipv6Parts.join(":");
+    }
+
+    ip = ip.replace(/\:/g, "");
+    ip = ip.replace(/\./g, "");
+
+    let firstPart = gaData.baseClientPart1;
+    let secondPart = gaData.baseClientPart2;
+
+    let filled = 0;
+
+    while (ip.length > 10 && filled < 10) {
+
+        let sign = ip.substr(0, 1);
+
+        let firstPartStart = firstPart.substr(0, filled);
+        let firstPartEnd = firstPart.substr(filled + 1);
+
+        firstPart = firstPartStart + sign + firstPartEnd;
+
+        filled++;
+        ip = ip.substr(1);
+    }
+
+    filled = 0;
+
+    while (ip.length > 0 && filled < 10) {
+
+        let sign = ip.substr(0, 1);
+
+        let secondPartStart = secondPart.substr(0, filled);
+        let secondPartEnd = secondPart.substr(filled + 1);
+
+        secondPart = secondPartStart + sign + secondPartEnd;
+
+        filled++;
+        ip = ip.substr(1);
+    }
+
+    return `${firstPart}.${secondPart}`;
 }
 
 // Start the server
